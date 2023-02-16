@@ -1,6 +1,6 @@
 package com.example.coroutines;
 
-public interface Repository {
+public interface Repository extends Load<String> {
 
     void load(DataCallback callback);
 

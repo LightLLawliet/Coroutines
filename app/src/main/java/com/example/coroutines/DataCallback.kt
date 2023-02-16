@@ -1,6 +1,6 @@
 package com.example.coroutines
 
-interface DataCallback {
+interface DataCallback<T> {
 
-    fun returnValue(value: String)
+    fun returnValue(value: T)
 }
