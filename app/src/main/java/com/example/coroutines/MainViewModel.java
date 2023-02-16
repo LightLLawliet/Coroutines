@@ -9,12 +9,9 @@ public class MainViewModel {
 
     private final MutableLiveData<String> liveData;
     private final Repository repository;
-    private final  DataCallback callback = new DataCallback() {
-        @Override
-        public void returnValue(@NonNull String value) {
-            liveData.postValue(value);
-        }
-    };
+
+    private String cached = "";
+    private final DataCallback callback = value -> cached = value;
 
     public MainViewModel(Repository repository) {
         this.repository = repository;
@@ -26,7 +23,16 @@ public class MainViewModel {
     }
 
     public void load() {
-        repository.load(callback);
-        System.out.println("");
+        new Thread(() -> {
+            repository.load(callback);
+            //wait!
+            while ("".equals(cached)) {
+                //theoretically
+                //
+                //temporary solution, cause we don't have
+                // coroutines in Java
+            }
+            liveData.postValue(cached);
+        }).start();
     }
 }
